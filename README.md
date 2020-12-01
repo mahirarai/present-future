@@ -1,4 +1,4 @@
-# present-future
+# Present Future
 
 https://mahirarai.github.io/present-future/
 
