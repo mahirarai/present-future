@@ -6,7 +6,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
-	<!-- #7858A6, #242040, #3E3C73, #048ABF, #A9BF04 -->
 	<style type="text/css">
 		body{
 			background-color: #F1F3F4;
@@ -73,8 +72,88 @@
 <body>
 
 	<div id="vis">
-		<!-- PART 1 -->
-		<iframe style="width: 100%; height: 800px; overflow: hidden;"  scrolling="no" frameborder="0" src="https://editor.p5js.org/mahirar/embed/_dZSeDMpT"></iframe>
+		<iframe style="width: 100%; height: 800px; overflow: hidden;"  scrolling="no" frameborder="0" src="https://editor.p5js.org/mahirar/embed/_dZSeDMpT">
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/addons/p5.sound.min.js"></script>
+				<meta charset="utf-8">
+				<base href="https://editor.p5js.org/mahirar/embed/_dZSeDMpT/">
+				<style>
+					html, body {
+						margin: 0;
+						padding: 0;
+						}
+						canvas {
+							display: block;
+						}
+					</style>
+			</head>
+			<body>
+				<script>
+					// Present Future, Chapter One
+					let cubeSize = 600;
+					let blockSize = 20;
+					let expand = false;
+
+					function setup(){
+					  createCanvas(windowWidth, windowHeight, WEBGL);
+					  colorMode(HSB, random(1.1,1.7));
+					}
+
+					function mousePressed(){
+					  colorMode(HSB, random(1.1,1.7));
+					}
+
+					function draw() {
+					  background('#F1F3F4');
+					  noFill();
+					  strokeWeight(1);
+					  stroke((1/5 + 0.75)%1, 1, 1, 1);
+					  
+					  // Code adapted from Jason Labbe - jasonlabbe3d.com
+					  rotateX(radians(map(mouseY, 0, height, 90, -90)));
+					  rotateY(radians(map(mouseX, 0, width, -90, 90)));
+					  
+					  for (let x = 0; x < cubeSize; x+=blockSize) {
+					    for (let z = 0; z < cubeSize; z+=blockSize) {
+					      let n = noise((frameCount + x + z * 200) * 0.01);
+					      let d = max(dist(cubeSize / 2, cubeSize / 2, x, z) * 0.0075, 0.25);
+					      let squash = map(n, 0, 1, 3, -1.5);
+					      let stretch = map(n, 0, 1, -5, 10 / d);
+					      
+					      push();
+					      translate(x - cubeSize / 2, 0, z - cubeSize / 2);
+					      rotate(radians(map(n, 0, 1, -135, 135)));
+					      scale(squash, stretch, squash);
+					      box(blockSize * 0.8);
+					      pop();
+					    }
+					  }
+					  // End
+					  
+					  if(!expand){
+					    cubeSize--;
+					    if(cubeSize <= 10){
+					      expand = true;
+					    }
+					  }
+					  if(expand){
+					    cubeSize++; 
+					    if(cubeSize >= 600){
+					      expand = false;
+					    }
+					  }
+					  
+					}
+				</script>
+				<main>
+					<canvas id="defaultCanvas0" class="p5Canvas" width="2336" height="1600" style="width: 1168px; height: 800px;"></canvas>
+				</main>
+			</body>
+			</html>
+		</iframe>
 	</div>
 	
 	<div class="fixed-top" class="main">
@@ -89,7 +168,7 @@
 	</div>
 
 	<div class="fixed-bottom" class="main">
-		<audio autoplay loop controls>
+		<audio autoplay controls>
 		<source src="files/P1_FINAL.ogg" type="audio/ogg">
 			<source src="files/P1_FINAL.mp3" type="audio/mpeg">
 			Your browser does not support the audio tag.
